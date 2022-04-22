@@ -1,45 +1,79 @@
-// users-model.js - A mongoose model
-//
-// See http://mongoosejs.com/docs/models.html
+// See http://docs.sequelizejs.com/en/latest/docs/models-definition/
 // for more of what you can do here.
-module.exports = function (app) {
-	const mongooseClient = app.get("mongooseClient");
+const Sequelize = require("sequelize");
+const DataTypes = Sequelize.DataTypes;
 
-	const schema = new mongooseClient.Schema(
+module.exports = function (app) {
+	const sequelizeClient = app.get("sequelizeClient");
+	const users = sequelizeClient.define(
+		"users",
 		{
-			email: {
-				type: String,
+			id: {
+				type: DataTypes.UUID,
+				primaryKey: true,
+				defaultValue: DataTypes.UUIDV4,
 				unique: true,
-				lowercase: true,
-				index: true,
-				required: true,
 			},
-			password: { type: String, required: true },
-			firstname: { type: String, required: true },
-			lastname: { type: String, required: true },
-			isActive: { type: Boolean, default: true },
-			permissions: { type: Array, default: ["user"] },
-			passwordReset: { type: String },
-			passwordResetToken: { type: String },
-			lastLogIn: { type: Date },
-			isVerified: { type: Boolean },
-			verifyToken: { type: String },
-			verifyShortToken: { type: String },
-			verifyLongToken: { type: String },
-			verifyExpires: { type: Date },
-			verifyChanges: { type: Object },
-			resetToken: { type: String },
-			resetExpires: { type: Date },
+			firstname: {
+				type: DataTypes.STRING,
+				allowNull: false,
+			},
+			lastname: {
+				type: DataTypes.STRING,
+				allowNull: false,
+			},
+			email: {
+				type: DataTypes.STRING,
+				isEmail: true,
+				allowNull: false,
+				unique: true,
+			},
+			password: {
+				type: DataTypes.STRING,
+				allowNull: false,
+			},
+			isActive: {
+				type: DataTypes.BOOLEAN,
+				allowNull: false,
+				defaultValue: true,
+			},
+			permissions: {
+				type: DataTypes.ENUM({
+					values: ["user", "admin"],
+				}),
+				allowNull: false,
+				defaultValue: "user",
+			},
+			isVerified: {
+				type: DataTypes.BOOLEAN,
+				allowNull: false,
+				defaultValue: false,
+			},
+			verifyToken: { type: DataTypes.STRING },
+			verifyExpires: { type: DataTypes.DATE, isDate: true },
+			resetToken: { type: DataTypes.STRING },
+			resetExpires: { type: DataTypes.DATE, isDate: true },
 		},
 		{
-			timestamps: true,
+			hooks: {
+				beforeCount(options) {
+					options.raw = true;
+				},
+			},
 		}
 	);
 
-	// This is necessary to avoid model compilation errors in watch mode
-	// see https://mongoosejs.com/docs/api/connection.html#connection_Connection-deleteModel
-	if (mongooseClient.modelNames().includes("users")) {
-		mongooseClient.deleteModel("users");
-	}
-	return mongooseClient.model("users", schema);
+	// eslint-disable-next-line no-unused-vars
+	users.associate = function (models) {
+		// users.belongsToMany(models.workspaces, {
+		// 	through: members,
+		// 	as: "workspaces",
+		// 	foreignKey: "userId",
+		// 	otherKey: "workspaceId",
+		// });
+		// Define associations here
+		// See http://docs.sequelizejs.com/en/latest/docs/associations/
+	};
+
+	return users;
 };

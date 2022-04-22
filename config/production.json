@@ -1,4 +1,5 @@
 {
-	"host": "server-app.feathersjs.com",
+	"live": true,
+	"host": "localhost",
 	"port": "PORT"
 }

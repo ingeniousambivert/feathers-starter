@@ -1,28 +1,56 @@
 {
 	"host": "localhost",
-	"port": 3030,
+	"port": "3030",
+	"website": "CLIENT_URL",
+	"live": false,
 	"public": "../public/",
 	"paginate": {
 		"default": 10,
-		"max": 50
+		"max": 200
 	},
 	"authentication": {
 		"entity": "user",
 		"service": "users",
-		"secret": "4AT5DDwb1zosCE9aFsfv1+55kag=",
+		"secret": "W4+hX3oAyYE0RGNtX+vPsm9vh8o=",
 		"authStrategies": ["jwt", "local"],
 		"jwtOptions": {
 			"header": {
 				"typ": "access"
 			},
-			"audience": "https://feathers.starter",
+			"audience": "CLIENT_URL",
 			"issuer": "feathers",
 			"algorithm": "HS256",
-			"expiresIn": "1d"
+			"expiresIn": "365d"
 		},
 		"local": {
 			"usernameField": "email",
 			"passwordField": "password"
+		}
+	},
+
+	"postgres": {
+		"ip": "POSTGRES_IP",
+		"user": "POSTGRES_USER",
+		"password": "POSTGRES_PASSWORD",
+		"db": "POSTGRES_DB",
+		"port": 5432
+	},
+
+	"sendgrid": {
+		"apiKey": "SENDGRID_API_KEY",
+		"templateKeys": {
+			"welcome": "SENDGRID_WELCOME",
+			"reset": "SENDGRID_RESET",
+			"resetDone": "SENDGRID_RESET_DONE",
+			"verify": "SENDGRID_VERIFY",
+			"verifyDone": "SENDGRID_VERIFY_DONE",
+			"passwordChange": "SENDGRID_PASSWORD_CHANGE",
+			"emailChange": "SENDGRID_EMAIL_CHANGE",
+			"invite": "SENDGRID_INVITE"
+		},
+		"from": {
+			"name": "AttriOne",
+			"email": "FROM_EMAIL"
 		}
 	}
 }

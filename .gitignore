@@ -1,5 +1,4 @@
 # Logs
-logs
 *.log
 
 # Runtime data
@@ -110,8 +109,6 @@ $RECYCLE.BIN/
 lib/
 data/
 
-development.json
-.env.local
 
 ### VSCODE FILES
 .vscode/*
@@ -121,3 +118,11 @@ development.json
 !.vscode/extensions.json
 *.code-workspace
 .vscode
+
+development.json
+.env
+.env.production
+.env.local
+.env.staging
+*.processed.*.yml
+

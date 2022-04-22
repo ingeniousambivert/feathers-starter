@@ -14,8 +14,15 @@ const {
 
 const notifyService = require("@services/authmanagement/notifier");
 
-const notifyServiceHook = (context) => {
-	notifyService(context.app).notifier("resendVerifySignup", context.data);
+const notifyServiceHook = async (context) => {
+	const { app, data } = context;
+	try {
+		const service = await notifyService(app);
+		return service.notifier("resendVerifySignup", data);
+	} catch (error) {
+		app.notify(`"service:user:hooks:notifyServiceHook:"${error.message}`);
+		app.logger.error("service:user:hooks:notifyServiceHook:", error);
+	}
 };
 
 module.exports = {
@@ -25,33 +32,39 @@ module.exports = {
 			authenticate("jwt"),
 			iff(
 				checkPermissions({
-					roles: ["super_admin", "admin"],
+					roles: ["admin"],
 					field: "permissions",
 					error: false,
 				})
 			),
-			iff((context) => !context.params.permitted, [
-				setField({
-					from: "params.user._id",
-					as: "params.query._id",
-				}),
-			]),
+			iff(
+				(context) => !context.params.permitted,
+				[
+					setField({
+						from: "params.user.id",
+						as: "params.query.id",
+					}),
+				]
+			),
 		],
 		get: [
 			authenticate("jwt"),
 			iff(
 				checkPermissions({
-					roles: ["super_admin", "admin"],
+					roles: ["admin"],
 					field: "permissions",
 					error: false,
 				})
 			),
-			iff((context) => !context.params.permitted, [
-				setField({
-					from: "params.user._id",
-					as: "params.query._id",
-				}),
-			]),
+			iff(
+				(context) => !context.params.permitted,
+				[
+					setField({
+						from: "params.user.id",
+						as: "params.query.id",
+					}),
+				]
+			),
 		],
 		create: [hashPassword("password"), addVerification()],
 		update: [
@@ -72,17 +85,20 @@ module.exports = {
 			),
 			iff(
 				checkPermissions({
-					roles: ["super_admin", "admin"],
+					roles: ["admin"],
 					field: "permissions",
 					error: false,
 				})
 			),
-			iff((context) => !context.params.permitted, [
-				setField({
-					from: "params.user._id",
-					as: "params.query._id",
-				}),
-			]),
+			iff(
+				(context) => !context.params.permitted,
+				[
+					setField({
+						from: "params.user.id",
+						as: "params.query.id",
+					}),
+				]
+			),
 		],
 		patch: [
 			authenticate("jwt"),
@@ -100,17 +116,20 @@ module.exports = {
 				),
 				iff(
 					checkPermissions({
-						roles: ["super_admin", "admin"],
+						roles: ["admin"],
 						field: "permissions",
 						error: false,
 					})
 				),
-				iff((context) => !context.params.permitted, [
-					setField({
-						from: "params.user._id",
-						as: "params.query._id",
-					}),
-				]),
+				iff(
+					(context) => !context.params.permitted,
+					[
+						setField({
+							from: "params.user.id",
+							as: "params.query.id",
+						}),
+					]
+				),
 				hashPassword("password")
 			),
 		],
@@ -121,6 +140,8 @@ module.exports = {
 		all: [
 			protect(
 				"password",
+				"googleId",
+				"picture",
 				"verifyToken",
 				"verifyShortToken",
 				"verifyExpires",
@@ -133,7 +154,15 @@ module.exports = {
 		find: [],
 		get: [],
 		create: [
-			protect("active", "firstname", "lastname", "email", "permissions"),
+			protect(
+				"isActive",
+				"googleId",
+				"picture",
+				"firstname",
+				"lastname",
+				"email",
+				"permissions"
+			),
 			notifyServiceHook,
 			removeVerification(),
 		],

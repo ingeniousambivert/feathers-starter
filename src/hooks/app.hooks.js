@@ -1,8 +1,19 @@
 // Application hooks that run for every service
-const { errorHandler } = require("@errors");
+// const { rateLimit } = require("@hooks");
+// const { RateLimiterMemory } = require("rate-limiter-flexible");
+
+// const rateLimiter = new RateLimiterMemory({
+// 	// number of requests
+// 	points: 1,
+// 	// per second
+// 	duration: 1,
+// });
+
+// const rateLimitHook = rateLimit(rateLimiter);
 
 module.exports = {
 	before: {
+		// all: [rateLimitHook],
 		all: [],
 		find: [],
 		get: [],
@@ -23,7 +34,7 @@ module.exports = {
 	},
 
 	error: {
-		all: [errorHandler],
+		all: [],
 		find: [],
 		get: [],
 		create: [],

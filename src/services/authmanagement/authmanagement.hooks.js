@@ -1,6 +1,4 @@
-const { authenticate, protect, iff } = require("@hooks");
-
-const isAction = (...args) => (hook) => args.includes(hook.data.action);
+const { authenticate, protect, iff, isAction, configure } = require("@hooks");
 
 module.exports = {
 	before: {
@@ -22,7 +20,6 @@ module.exports = {
 				"active",
 				"firstname",
 				"lastname",
-				"email",
 				"permissions",
 				"verifyToken",
 				"updatedAt",
@@ -37,7 +34,7 @@ module.exports = {
 		],
 		find: [],
 		get: [],
-		create: [],
+		create: [iff(isAction("verifySignupLong"), configure.subscription())],
 		update: [],
 		patch: [],
 		remove: [],

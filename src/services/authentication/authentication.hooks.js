@@ -13,12 +13,22 @@ module.exports = {
 
 	after: {
 		all: [
+			//TODO: Protect the commented fields
 			protect(
-				"user.firstname",
-				"user.lastname",
-				"user.email",
+				"authentication",
+				// "user.firstname",
+				// "user.lastname",
+				// "user.email",
 				"user.isVerified",
-				"user.active"
+				"user.password",
+				"user.isActive",
+				"user.createdAt",
+				"user.updatedAt",
+				"user.permissions",
+				"user.verifyToken",
+				"user.verifyExpires",
+				"user.resetToken",
+				"user.resetExpires"
 			),
 		],
 		find: [],

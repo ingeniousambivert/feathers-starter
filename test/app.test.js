@@ -1,5 +1,6 @@
+/* eslint-disable no-undef */
 const assert = require("assert").strict;
-const axios = require("axios");
+const client = require("superagent");
 const url = require("url");
 const app = require("../src/app");
 
@@ -25,7 +26,7 @@ describe("Feathers application tests", () => {
 	});
 
 	it("starts and shows the index page", async () => {
-		const { data } = await axios.get(getUrl());
+		const { data } = await client.get(getUrl());
 
 		assert.ok(data.indexOf("<html lang='en'>") !== -1);
 	});
@@ -33,10 +34,8 @@ describe("Feathers application tests", () => {
 	describe("404", function () {
 		it("shows a 404 HTML page", async () => {
 			try {
-				await axios.get(getUrl("path/to/nowhere"), {
-					headers: {
-						Accept: "text/html",
-					},
+				await client.get(getUrl("path/to/nowhere")).set({
+					Accept: "text/html",
 				});
 				assert.fail("should never get here");
 			} catch (error) {
@@ -49,7 +48,7 @@ describe("Feathers application tests", () => {
 
 		it("shows a 404 JSON error without stack trace", async () => {
 			try {
-				await axios.get(getUrl("path/to/nowhere"), {
+				await client.get(getUrl("path/to/nowhere"), {
 					json: true,
 				});
 				assert.fail("should never get here");
