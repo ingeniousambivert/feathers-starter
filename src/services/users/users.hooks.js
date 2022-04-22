@@ -140,8 +140,6 @@ module.exports = {
 		all: [
 			protect(
 				"password",
-				"googleId",
-				"picture",
 				"verifyToken",
 				"verifyShortToken",
 				"verifyExpires",
@@ -156,8 +154,6 @@ module.exports = {
 		create: [
 			protect(
 				"isActive",
-				"googleId",
-				"picture",
 				"firstname",
 				"lastname",
 				"email",
