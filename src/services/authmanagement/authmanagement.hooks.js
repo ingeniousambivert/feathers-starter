@@ -1,4 +1,4 @@
-const { authenticate, protect, iff, isAction, configure } = require("@hooks");
+const { authenticate, protect, iff, isAction } = require("@hooks");
 
 module.exports = {
 	before: {
@@ -34,7 +34,7 @@ module.exports = {
 		],
 		find: [],
 		get: [],
-		create: [iff(isAction("verifySignupLong"), configure.subscription())],
+		create: [iff(isAction("verifySignupLong"))],
 		update: [],
 		patch: [],
 		remove: [],
