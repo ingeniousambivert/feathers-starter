@@ -1,6 +1,6 @@
 {
 	"name": "server",
-	"description": "Feathers Server for Chartbee Team Tool",
+	"description": "Feathers Server",
 	"version": "1.0.0",
 	"homepage": "",
 	"private": true,
@@ -27,8 +27,8 @@
 		"test": "npm run lint && npm run mocha",
 		"lint": "eslint --fix .",
 		"format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettier.config.js",
-		"dev": "nodemon --trace-deprecation --trace-warnings src/server.js | npx bunyan -o short",
-		"start": "node src/server.js | npx bunyan -o short",
+		"dev": "NODE_ENVIRONMENT=development nodemon --trace-deprecation --trace-warnings src/server.js | npx bunyan -o short",
+		"start": "NODE_ENVIRONMENT=production node src/server.js | npx bunyan -o short",
 		"mocha": "mocha test/ --recursive --exit",
 		"migrate:up": "npx sequelize db:migrate",
 		"migrate:down": "npx sequelize db:migrate:undo"
