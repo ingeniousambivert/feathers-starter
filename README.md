@@ -1,6 +1,6 @@
-# AttriOne - Server
+# Feathers Starter
 
-> Feathers Server
+> Feathers server with basic user management and role based access control. 
 
 This project was bootstrapped with [Feathers Generator](https://docs.feathersjs.com/guides/basics/generator.html).
 
