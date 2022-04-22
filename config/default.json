@@ -41,7 +41,7 @@
 			"invite": "SENDGRID_INVITE"
 		},
 		"from": {
-			"name": "AttriOne",
+			"name": "Feathers-Starter",
 			"email": "FROM_EMAIL"
 		}
 	}
