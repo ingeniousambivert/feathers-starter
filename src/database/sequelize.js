@@ -1,10 +1,27 @@
+/* eslint-disable no-dupe-else-if */
 const Sequelize = require("sequelize");
+const dialect = "postgres";
 
 module.exports = function (app) {
-	const postgresConfig = app.get("postgres");
-	const connectionString = `postgres://${postgresConfig.user}:${postgresConfig.password}@${postgresConfig.ip}:${postgresConfig.port}/${postgresConfig.db}`;
+	const postgresConfig = app.get(dialect);
+
+	let connectionString = `postgres://${postgresConfig.ip}:${postgresConfig.port}/${postgresConfig.db}`;
+
+	console.log(postgresConfig);
+
+	if (postgresConfig.user !== null && postgresConfig.user !== undefined) {
+		connectionString = `postgres://${postgresConfig.user}@${postgresConfig.ip}:${postgresConfig.port}/${postgresConfig.db}`;
+	} else if (
+		postgresConfig.user !== null &&
+		postgresConfig.user !== undefined &&
+		postgresConfig.password !== null &&
+		postgresConfig.password !== undefined
+	) {
+		connectionString = `postgres://${postgresConfig.user}:${postgresConfig.password}@${postgresConfig.ip}:${postgresConfig.port}/${postgresConfig.db}`;
+	}
+
 	const sequelize = new Sequelize(connectionString, {
-		dialect: "postgres",
+		dialect,
 		logging: false,
 		define: {
 			freezeTableName: true,
