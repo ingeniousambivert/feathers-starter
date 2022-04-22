@@ -28,14 +28,6 @@
 		}
 	},
 
-	"postgres": {
-		"ip": "POSTGRES_IP",
-		"user": "POSTGRES_USER",
-		"password": "POSTGRES_PASSWORD",
-		"db": "POSTGRES_DB",
-		"port": 5432
-	},
-
 	"sendgrid": {
 		"apiKey": "SENDGRID_API_KEY",
 		"templateKeys": {
